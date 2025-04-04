@@ -19,7 +19,19 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: "5mb",
     },
-  },
+    turbo: {
+      rules: {
+        // Configure path aliases for Turbopack
+        '@/*': ['./*'],
+        '@/components/*': ['./components/*'],
+        '@/lib/*': ['./lib/*'],
+        '@/actions/*': ['./actions/*'],
+        '@/hooks/*': ['./hooks/*'],
+        '@/app/*': ['./app/*'],
+        '@/types/*': ['./types/*']
+      }
+    }
+  }
 };
 
 export default nextConfig;

@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { PenBox, LayoutDashboard, Menu, X } from "lucide-react";
+import { PenBox, LayoutDashboard, Menu, X, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
+import { ChatBot } from "./chatbot/ChatBot";
 
 const Header = () => {
   // Use useUser hook for client-side user data
@@ -31,6 +32,13 @@ const HeaderClient = ({ isLoaded, user }) => {
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const openChatbot = () => {
+    const trigger = document.getElementById('chatbot-trigger');
+    if (trigger) {
+      trigger.click();
+    }
   };
 
   return (
@@ -100,92 +108,86 @@ const HeaderClient = ({ isLoaded, user }) => {
             </div>
           </SignedOut>
           
-          <SignedIn>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "w-10 h-10",
-                }
-              }}
-              afterSignOutUrl="/"
-            />
-          </SignedIn>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/10 relative z-50"
-              onClick={toggleMobileMenu}
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </Button>
-          </div>
+          {isLoaded && user && (
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative text-white hover:bg-white/10"
+                onClick={openChatbot}
+              >
+                <MessageSquare className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium flex items-center justify-center">
+                  AI
+                </span>
+              </Button>
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          )}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden relative z-10 text-white"
+          onClick={toggleMobileMenu}
+        >
+          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </nav>
 
       {/* Mobile Menu */}
-      <div 
-        className={`fixed inset-0 bg-black/95 backdrop-blur-lg z-40 transition-transform duration-300 transform ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden`}
-      >
-        <div className="container mx-auto px-4 py-20">
-          <div className="flex flex-col gap-8">
+      <div className={cn(
+        "md:hidden fixed inset-0 bg-black/95 backdrop-blur-lg z-40 transition-transform duration-300",
+        mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+      )}>
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col gap-6">
             <SignedOut>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
                 <a 
                   href="#features" 
-                  className="text-2xl font-semibold hover:text-primary transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
                 >
                   Features
                 </a>
                 <a 
                   href="#pricing" 
-                  className="text-2xl font-semibold hover:text-primary transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
                 >
                   Pricing
                 </a>
               </div>
-              
-              <div className="flex flex-col gap-4 mt-8">
-                <SignInButton forceRedirectUrl="/dashboard">
-                  <Button variant="outline" size="lg" className="w-full border-white/20 hover:bg-white/10">
-                    Login
-                  </Button>
-                </SignInButton>
-                <SignInButton forceRedirectUrl="/dashboard">
-                  <Button size="lg" className="w-full gradient text-white">
-                    Sign Up
-                  </Button>
-                </SignInButton>
-              </div>
             </SignedOut>
             
             {isLoaded && user && (
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
                 <Link
                   href="/dashboard" 
-                  className="text-2xl font-semibold hover:text-primary transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
                 >
                   Dashboard
                 </Link>
                 <Link 
-                  href="/transaction/create"
-                  className="text-2xl font-semibold hover:text-primary transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  href="/transaction/create" 
+                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
                 >
                   Add Transaction
                 </Link>
+                <button
+                  className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors font-medium"
+                  onClick={openChatbot}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  <span>AI Assistant</span>
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* ChatBot Component */}
+      <ChatBot />
     </header>
   );
 };

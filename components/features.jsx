@@ -1,4 +1,6 @@
+// Main React import
 import React from "react";
+// Importing icons from lucide-react for feature cards
 import { 
   Brain, 
   TrendingUp, 
@@ -10,6 +12,7 @@ import {
   Clock
 } from "lucide-react";
 
+// Array defining all platform features with icons, titles and descriptions
 const features = [
   {
     icon: <Brain className="h-8 w-8 text-primary" />,
@@ -53,6 +56,12 @@ const features = [
   }
 ];
 
+/**
+ * FeatureCard component - Displays an individual feature with icon, title and description
+ * @param {ReactNode} icon - The icon component for the feature
+ * @param {string} title - The title of the feature
+ * @param {string} description - Detailed description of the feature
+ */
 const FeatureCard = ({ icon, title, description }) => {
   return (
     <div className="relative group">
@@ -68,6 +77,10 @@ const FeatureCard = ({ icon, title, description }) => {
   );
 };
 
+/**
+ * Features component - Displays all platform features in a responsive grid
+ * Includes animated background elements and gradient effects
+ */
 const Features = () => {
   return (
     <section id="features" className="py-24 px-4 relative overflow-hidden">
@@ -110,4 +123,4 @@ const Features = () => {
   );
 };
 
-export default Features; 
+export default Features;

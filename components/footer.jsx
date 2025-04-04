@@ -18,7 +18,7 @@ const Footer = () => {
       <div className="absolute inset-0 bg-grid-pattern opacity-10 z-0"></div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
           <div>
             <Link href="/" className="inline-block mb-6">
               <span className="text-2xl font-bold gradient-title">FinanceAI</span>
@@ -54,71 +54,9 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/analytics" className="text-muted-foreground hover:text-primary transition-colors">
-                  Analytics
-                </Link>
-              </li>
-              <li>
-                <Link href="/transaction" className="text-muted-foreground hover:text-primary transition-colors">
-                  Transactions
-                </Link>
-              </li>
-              <li>
                 <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">
                   Features
                 </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-bold text-lg mb-6">Resources</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Documentation
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  API Reference
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Help Center
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-bold text-lg mb-6">Company</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Terms of Service
-                </a>
               </li>
             </ul>
           </div>
@@ -147,4 +85,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default Footer;
