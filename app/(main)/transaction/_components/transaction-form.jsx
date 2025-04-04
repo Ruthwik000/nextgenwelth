@@ -109,7 +109,7 @@ export function AddTransactionForm({
   };
 
   useEffect(() => {
-    if (transactionResult?.success && !transactionLoading) {
+    if (!transactionLoading && transactionResult?.success) {
       toast.success(
         editMode
           ? "Transaction updated successfully"
@@ -118,7 +118,7 @@ export function AddTransactionForm({
       reset();
       router.push(`/account/${transactionResult.data.accountId}`);
     }
-  }, [transactionResult, transactionLoading, editMode]);
+  }, [transactionResult, transactionLoading, editMode, reset, router]);
 
   const type = watch("type");
   const isRecurring = watch("isRecurring");

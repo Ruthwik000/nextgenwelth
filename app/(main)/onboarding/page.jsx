@@ -1,5 +1,6 @@
 import { checkUser } from "@/lib/checkUser";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function OnboardingPage() {
   try {
@@ -16,9 +17,9 @@ export default async function OnboardingPage() {
           <p className="text-muted-foreground">
             {error.message || "There was an error setting up your account. Please try again."}
           </p>
-          <a href="/" className="text-blue-600 hover:underline mt-4">
+          <Link href="/" className="text-blue-600 hover:underline mt-4">
             Return to Home
-          </a>
+          </Link>
         </div>
       </div>
     );

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { PenBox, LayoutDashboard, Menu, X, TrendingUp, MessageCircle } from "lucide-react";
+import { Menu, X, TrendingUp, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { cn } from "../lib/utils";
 import { ChatBot } from "./chatbot/ChatBot";
 
