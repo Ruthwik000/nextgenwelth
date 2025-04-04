@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { PenBox, LayoutDashboard, Menu, X, MessageSquare } from "lucide-react";
+import { PenBox, LayoutDashboard, Menu, X, TrendingUp, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { cn } from "../lib/utils";
 import { ChatBot } from "./chatbot/ChatBot";
 
 const Header = () => {
-  // Use useUser hook for client-side user data
   const { isLoaded, user } = useUser();
   
   return (
@@ -20,6 +19,7 @@ const Header = () => {
 const HeaderClient = ({ isLoaded, user }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -34,23 +34,23 @@ const HeaderClient = ({ isLoaded, user }) => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const openChatbot = () => {
-    const trigger = document.getElementById('chatbot-trigger');
-    if (trigger) {
-      trigger.click();
-    }
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
-    <header className={cn(
+    <>
+      <ChatBot isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <header className={cn(
       "fixed top-0 w-full z-50 transition-all duration-300",
-      scrolled ? "bg-black/80 shadow-md backdrop-blur-md" : "bg-transparent"
+      scrolled ? "bg-black/40 shadow-md backdrop-blur-md" : "bg-black/30 backdrop-blur-sm"
     )}>
-      <div className="absolute inset-0 backdrop-blur-lg bg-background/70 border-b border-border/40"></div>
+      <div className="absolute inset-0 backdrop-blur-md bg-black/30 border-b border-white/10"></div>
       <nav className="container mx-auto px-4 py-3 flex items-center justify-between relative">
         <Link href="/" className="relative z-10">
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold gradient-title">FinanceAI</span>
+            <TrendingUp className="h-6 w-6 text-cyan-400" />
+            <span className="text-2xl font-bold text-white">NextGen Welth</span>
           </div>
         </Link>
 
@@ -60,13 +60,13 @@ const HeaderClient = ({ isLoaded, user }) => {
             <div className="flex items-center gap-6">
               <a 
                 href="#features" 
-                className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                className="text-white hover:text-cyan-400 transition-colors font-medium"
               >
                 Features
               </a>
               <a 
                 href="#pricing" 
-                className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                className="text-white hover:text-cyan-400 transition-colors font-medium"
               >
                 Pricing
               </a>
@@ -77,13 +77,13 @@ const HeaderClient = ({ isLoaded, user }) => {
             <div className="flex items-center gap-6">
               <Link
                 href="/dashboard" 
-                className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                className="text-white hover:text-cyan-400 transition-colors font-medium"
               >
                 Dashboard
               </Link>
               <Link 
                 href="/transaction/create" 
-                className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                className="text-white hover:text-cyan-400 transition-colors font-medium"
               >
                 Add Transaction
               </Link>
@@ -96,12 +96,12 @@ const HeaderClient = ({ isLoaded, user }) => {
           <SignedOut>
             <div className="hidden sm:flex items-center gap-3">
               <SignInButton forceRedirectUrl="/dashboard">
-                <Button variant="outline" size="sm" className="btn-hover border-white/20 text-white hover:bg-white/10 backdrop-blur-sm">
+                <Button variant="outline" size="sm" className="border-cyan-500/20 text-white hover:bg-cyan-500/10 backdrop-blur-sm">
                   Login
                 </Button>
               </SignInButton>
               <SignInButton forceRedirectUrl="/dashboard">
-                <Button size="sm" className="btn-hover gradient text-white">
+                <Button size="sm" className="bg-cyan-500 hover:bg-cyan-600 text-white">
                   Sign Up
                 </Button>
               </SignInButton>
@@ -112,14 +112,14 @@ const HeaderClient = ({ isLoaded, user }) => {
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
-                size="icon"
-                className="relative text-white hover:bg-white/10"
-                onClick={openChatbot}
+                size="sm"
+                className={cn(
+                  "text-white transition-colors",
+                  isOpen ? "text-cyan-400" : "hover:text-cyan-400"
+                )}
+                onClick={toggleChat}
               >
-                <MessageSquare className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium flex items-center justify-center">
-                  AI
-                </span>
+                <MessageCircle className="h-5 w-5" />
               </Button>
               <UserButton afterSignOutUrl="/" />
             </div>
@@ -137,7 +137,7 @@ const HeaderClient = ({ isLoaded, user }) => {
 
       {/* Mobile Menu */}
       <div className={cn(
-        "md:hidden fixed inset-0 bg-black/95 backdrop-blur-lg z-40 transition-transform duration-300",
+        "md:hidden fixed inset-0 bg-black/90 backdrop-blur-lg z-40 transition-transform duration-300",
         mobileMenuOpen ? "translate-x-0" : "translate-x-full"
       )}>
         <div className="container mx-auto px-4 py-6">
@@ -146,13 +146,13 @@ const HeaderClient = ({ isLoaded, user }) => {
               <div className="flex flex-col gap-4">
                 <a 
                   href="#features" 
-                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                  className="text-white/80 hover:text-cyan-400 transition-colors font-medium"
                 >
                   Features
                 </a>
                 <a 
                   href="#pricing" 
-                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                  className="text-white/80 hover:text-cyan-400 transition-colors font-medium"
                 >
                   Pricing
                 </a>
@@ -163,21 +163,21 @@ const HeaderClient = ({ isLoaded, user }) => {
               <div className="flex flex-col gap-4">
                 <Link
                   href="/dashboard" 
-                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                  className="text-white/80 hover:text-cyan-400 transition-colors font-medium"
                 >
                   Dashboard
                 </Link>
                 <Link 
                   href="/transaction/create" 
-                  className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                  className="text-white/80 hover:text-cyan-400 transition-colors font-medium"
                 >
                   Add Transaction
                 </Link>
                 <button
-                  className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors font-medium"
-                  onClick={openChatbot}
+                  className="flex items-center gap-2 text-white/80 hover:text-cyan-400 transition-colors font-medium"
+                  onClick={toggleChat}
                 >
-                  <MessageSquare className="h-5 w-5" />
+                  <MessageCircle className="h-5 w-5" />
                   <span>AI Assistant</span>
                 </button>
               </div>
@@ -185,10 +185,8 @@ const HeaderClient = ({ isLoaded, user }) => {
           </div>
         </div>
       </div>
-
-      {/* ChatBot Component */}
-      <ChatBot />
     </header>
+    </>
   );
 };
 

@@ -3,7 +3,6 @@ import "./globals.css";
 import Header from "../components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
-import { ChatBot } from "../components/chatbot/ChatBot";
 // Import commented out to fix error
 // import PageTransition from "../components/ui/page-transition";
 
@@ -33,7 +32,6 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           <Toaster richColors position="top-right" />
-          <ChatBot />
         </body>
       </html>
     </ClerkProvider>

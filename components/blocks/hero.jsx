@@ -11,18 +11,19 @@ export function HeroDemo() {
       // Main headline text
       title="AI that works for your finances."
       // Supporting subtitle text
-      subtitle="Transform your financial management with intelligent automation. Simple, powerful, reliable."
+      subtitle=""
       // Array of action buttons with their properties
       actions={[
         {
-          label: "Get Started",
+          label: "Discover Excellence",
           href: "/dashboard",
-          variant: "gradient"
+          variant: "ghost",
+          icon: "→"
         }
       ]}
       // Custom class names for styling different elements
-      titleClassName="text-5xl md:text-6xl font-extrabold gradient-title"
-      subtitleClassName="text-lg md:text-xl max-w-[600px]"
+      titleClassName="text-7xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80"
+      subtitleClassName=""
       actionsClassName="mt-8"
     />
   );

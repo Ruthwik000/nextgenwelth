@@ -1,158 +1,154 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
-import { Input } from "../ui/input";
-import { MessageSquare, Send, X, Bot, User, Loader2 } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { useState } from 'react';
+import { Button } from '../ui/button';
+import { MessageCircle, X, Send } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
-export function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false);
+export function ChatBot({ isOpen, onClose }) {
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!message.trim() || isLoading) return;
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSendMessage = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    const userMessage = message.trim();
+    setMessages(prev => [...prev, { type: 'user', content: userMessage }]);
+    setMessage('');
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage })
       });
 
-      if (!response.ok) throw new Error("Failed to send message");
-
+      if (!response.ok) throw new Error('Failed to get response');
+      
       const data = await response.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
+      setMessages(prev => [...prev, { type: 'assistant', content: data.message }]);
     } catch (error) {
-      console.error("Error sending message:", error);
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "Sorry, I encountered an error. Please try again." },
-      ]);
+      console.error('Chat error:', error);
+      setMessages(prev => [...prev, { 
+        type: 'assistant', 
+        content: 'Sorry, I encountered an error. Please try again.'
+      }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const formatMessage = (content) => {
-    return content.split('\n').map((line, i) => (
-      <p key={i} className="mb-2 last:mb-0">
-        {line}
-      </p>
-    ));
-  };
-
   return (
-    <>
-      {!isOpen ? (
-        <Button
-          id="chatbot-trigger"
-          variant="ghost"
-          size="icon"
-          className="fixed bottom-4 right-4 z-50 bg-primary hover:bg-primary/90 text-white rounded-full h-12 w-12 shadow-lg"
-          onClick={() => setIsOpen(true)}
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
+      {isOpen ? (
+        <div 
+          className="bg-black/90 backdrop-blur-lg border border-white/10 w-full h-full flex flex-col pointer-events-auto"
         >
-          <MessageSquare className="h-6 w-6" />
-        </Button>
-      ) : (
-        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm">
-          <div className="flex flex-col h-full">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b">
+          <div className="flex items-center justify-between p-4 border-b border-white/10">
+            <div className="flex items-center gap-4">
+              <h3 className="text-white font-medium">Financial Assistant</h3>
               <div className="flex items-center gap-2">
-                <Bot className="h-6 w-6 text-primary" />
-                <h2 className="text-xl font-semibold">AI Financial Assistant</h2>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="hover:bg-destructive/10 hover:text-destructive"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "flex gap-3 max-w-3xl mx-auto",
-                    message.role === "user" ? "justify-end" : "justify-start"
-                  )}
-                >
-                  <div
-                    className={cn(
-                      "flex gap-2 rounded-lg p-4",
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
-                    )}
-                  >
-                    {message.role === "user" ? (
-                      <User className="h-5 w-5 shrink-0 mt-1" />
-                    ) : (
-                      <Bot className="h-5 w-5 text-primary shrink-0 mt-1" />
-                    )}
-                    <div className="space-y-2">
-                      {formatMessage(message.content)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start gap-3 max-w-3xl mx-auto">
-                  <div className="flex gap-2 rounded-lg p-4 bg-muted">
-                    <Bot className="h-5 w-5 text-primary shrink-0 mt-1" />
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input Area */}
-            <div className="p-4 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <div className="max-w-3xl mx-auto flex gap-2">
-                <Input
-                  placeholder="Ask me anything about finance..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-                  className="flex-1"
-                />
                 <Button
-                  onClick={handleSendMessage}
-                  disabled={isLoading || !input.trim()}
-                  className="shrink-0"
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:text-cyan-400"
                 >
-                  <Send className="h-4 w-4" />
+                  Clear Chat
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:text-cyan-400"
+                >
+                  Export Chat
                 </Button>
               </div>
             </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:text-cyan-400"
+              onClick={onClose}
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
+ai 
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "flex items-end gap-4",
+                  msg.type === 'user' ? 'justify-end space-x-reverse' : 'justify-start'
+                )}
+              >
+                {msg.type === 'assistant' && (
+                  <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-6 h-6 text-cyan-500" />
+                  </div>
+                )}
+                <div
+                  className={cn(
+                    "rounded-2xl px-6 py-4 max-w-[70%] leading-7 shadow-md",
+                    msg.type === 'user'
+                      ? 'bg-cyan-500 text-white rounded-br-sm'
+                      : 'bg-white/10 text-white/90 rounded-bl-sm'
+                  )}
+                >
+                  {msg.content}
+                </div>
+                {msg.type === 'user' && (
+                  <div className="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <span className="text-sm font-medium text-white">You</span>
+                  </div>
+                )}
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex items-end gap-4">
+                <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="w-6 h-6 text-cyan-500" />
+                </div>
+                <div className="bg-white/10 rounded-2xl rounded-bl-sm px-6 py-4 text-white/90 shadow-md">
+                  <div className="flex gap-3">
+                    <div className="w-3 h-3 rounded-full bg-cyan-500 animate-bounce"></div>
+                    <div className="w-3 h-3 rounded-full bg-cyan-500 animate-bounce delay-100"></div>
+                    <div className="w-3 h-3 rounded-full bg-cyan-500 animate-bounce delay-200"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-4 border-t border-white/10">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Ask about your finances..."
+                className="flex-1 bg-white/10 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                disabled={isLoading}
+              />
+              <Button
+                type="submit"
+                size="icon"
+                disabled={isLoading}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+          </form>
         </div>
-      )}
-    </>
+      ) : null}
+    </div>
   );
-} 
+}
