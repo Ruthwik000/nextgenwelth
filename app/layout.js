@@ -5,15 +5,16 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 // Import commented out to fix error
 // import PageTransition from "@/components/ui/page-transition";
+import ChatBot from "@/components/chat/chat-bot";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   display: 'swap',
   variable: '--font-inter',
 });
 
 export const metadata = {
-  title: "FinanceAI | AI-Powered Finance Platform",
+  title: "NextGenWelth | AI-Powered Finance Platform",
   description: "Manage your finances with AI intelligence - track, analyze, and optimize your spending with real-time insights.",
 };
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           <Toaster richColors position="top-right" />
+          <ChatBot />
         </body>
       </html>
     </ClerkProvider>

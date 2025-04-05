@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { getAccountWithTransactions } from "@/actions/account";
+import { formatCurrency } from "@/lib/utils";
 import { BarLoader } from "react-spinners";
 import { TransactionTable } from "../_components/transaction-table";
 import { notFound } from "next/navigation";
@@ -29,7 +30,7 @@ export default async function AccountPage({ params }) {
 
         <div className="text-right pb-2">
           <div className="text-xl sm:text-2xl font-bold">
-            ${parseFloat(account.balance).toFixed(2)}
+            {formatCurrency(account.balance)}
           </div>
           <p className="text-sm text-muted-foreground">
             {account._count.transactions} Transactions

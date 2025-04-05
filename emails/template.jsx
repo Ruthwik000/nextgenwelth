@@ -146,16 +146,16 @@ export default function EmailTemplate({
             <Section style={styles.statsContainer}>
               <div style={styles.stat}>
                 <Text style={styles.text}>Budget Amount</Text>
-                <Text style={styles.heading}>${data?.budgetAmount}</Text>
+                <Text style={styles.heading}>₹{data?.budgetAmount}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Spent So Far</Text>
-                <Text style={styles.heading}>${data?.totalExpenses}</Text>
+                <Text style={styles.heading}>₹{data?.totalExpenses}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Remaining</Text>
                 <Text style={styles.heading}>
-                  ${data?.budgetAmount - data?.totalExpenses}
+                  ₹{data?.budgetAmount - data?.totalExpenses}
                 </Text>
               </div>
             </Section>
@@ -179,7 +179,7 @@ export default function EmailTemplate({
             </Text>
             <Section style={styles.alertContainer}>
               <Text style={styles.alertHeading}>
-                ${data?.amount} on {data?.date}
+                ₹{data?.amount} on {data?.date}
               </Text>
               <Text style={styles.alertText}>
                 Description: {data?.description}
@@ -192,7 +192,7 @@ export default function EmailTemplate({
               </Text>
             </Section>
             <Text style={styles.text}>
-              If you didn't make this transaction or believe it to be suspicious, 
+              If you didn't make this transaction or believe it to be suspicious,
               please review it in your account immediately.
             </Text>
             <Text style={styles.footer}>

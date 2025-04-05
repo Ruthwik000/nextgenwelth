@@ -10,6 +10,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Custom styles for chat messages */
+.prose p {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.prose ul, .prose ol {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
 @layer base {
   :root {
     --background: 0 0% 98%;
@@ -38,7 +61,7 @@ html {
     --chart-5: 220 40% 30%;
     --radius: 0.75rem;
   }
-  
+
   .dark {
     --background: 215 28% 10%;
     --foreground: 0 0% 98%;
@@ -80,40 +103,40 @@ html {
   .gradient {
     @apply bg-gradient-to-r from-primary via-secondary to-accent;
   }
-  
+
   .gradient-title {
     @apply bg-gradient-to-r from-white via-primary to-secondary font-extrabold tracking-tighter text-transparent bg-clip-text;
   }
-  
+
   .animate-gradient-x {
     background-size: 200% 200%;
     animation: gradient 15s ease infinite;
   }
-  
+
   @keyframes gradient {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-  
+
   .animate-float {
     animation: float 4s ease-in-out infinite;
   }
-  
+
   @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
   }
-  
+
   .glass-effect {
     @apply backdrop-blur-lg bg-white/10 border border-white/20;
   }
-  
+
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1;
   }
-  
+
   .btn-hover {
     @apply transition-all duration-300 hover:shadow-md hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0;
   }
@@ -164,7 +187,7 @@ html {
 }
 
 .bg-grid-pattern {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
